@@ -17,6 +17,8 @@ function App() {
   const [query, setQuery] = useState('');
   const [weather, setWeather] = useState({});
   const [forecast, setForecast] = useState({});
+  
+  
 
   const search = (event) => {
     if (event.key === "Enter"){
@@ -30,9 +32,8 @@ function App() {
         .then(res => res.json())
         .then(result => {
           setForecast(result);
-          console.log(forecast);
-          console.log(result);
-        });
+        })
+        .catch(console.error);
     }
   }
 
@@ -48,7 +49,7 @@ function App() {
 
   return (
     <div className=
-    {(typeof weather.main != "undefined") 
+    {(typeof weather.main !== "undefined") 
       ? ((weather.main.temp > 32) 
         ? "app warm" 
         : "app") 
@@ -57,8 +58,7 @@ function App() {
         <div className="searchBox">
           <input type="text" className="searchBar" placeholder="Search city..." onChange={e => setQuery(e.target.value)} value={query} onKeyPress={(event) => search(event)}></input>
         </div>
-        {(typeof weather.main != "undefined") ? 
-        (
+        {weather.main && (
           <div>
             <div className="locationBox">
               <div className="location">{weather.name}, {weather.sys.country}</div>
@@ -73,7 +73,7 @@ function App() {
             </div>
             <Forecast forecast={forecast}/>
           </div>
-        ) : ("")}
+        )}
       </main>
     </div>
   );
